@@ -1,29 +1,24 @@
-from flask import json, jsonify
-from app import app
+from flask import Blueprint, render_template, request, jsonify
 from app import db
-from app.models import Menu
 
-@app.route('/')
-def home():
-    return jsonify({ 
-        "status": "ok",
-        "message": "🚀 Welcome to the CI/CD-powered Flask app using GitHub Actions and Railway!"
-    })
+bp = Blueprint('main', __name__)
 
-@app.route('/menu')
-def menu():
-    today = Menu.query.first()
-    if today:
-        body = { "today_special": today.name }
-        status = 200
+@bp.route('/')
+def index():
+    return jsonify({'message': 'Hello World!'})
+
+@bp.route('/health')
+def health():
+    return jsonify({'status': 'healthy'})
+
+# Add your other routes here
+@bp.route('/api/users', methods=['GET', 'POST'])
+def users():
+    if request.method == 'POST':
+        # Handle POST request
+        data = request.get_json()
+        # Your logic here
+        return jsonify({'message': 'User created'})
     else:
-        body = { "error": "Sorry, the service is not available today." }
-        status = 404
-    return jsonify(body), status
-
-@app.route('/status-check')
-def status_check():
-    return jsonify({ 
-        "status": "success",
-        "info": "✅ This route was added to test the CI/CD deployment using GitHub Actions and Railway."
-    })
+        # Handle GET request
+        return jsonify({'users': []})
