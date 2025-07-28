@@ -5,7 +5,10 @@ from app.models import Menu
 
 @app.route('/')
 def home():
-	return jsonify({ "status": "ok" })
+    return jsonify({ 
+        "status": "ok",
+        "message": "🚀 Welcome to the CI/CD-powered Flask app using GitHub Actions and Railway!"
+    })
 
 @app.route('/menu')
 def menu():
@@ -17,3 +20,10 @@ def menu():
         body = { "error": "Sorry, the service is not available today." }
         status = 404
     return jsonify(body), status
+
+@app.route('/status-check')
+def status_check():
+    return jsonify({ 
+        "status": "success",
+        "info": "✅ This route was added to test the CI/CD deployment using GitHub Actions and Railway."
+    })
